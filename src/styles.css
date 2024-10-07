@@ -1,0 +1,101 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
+}
+body{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: 2rem 4rem;
+    gap: 5%;
+    padding-bottom: 0;
+    min-width: 1010px;
+}
+
+.header{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem;
+}
+
+.content{
+    height: 100%;
+}
+
+.currentweather{
+    display: flex;
+    gap: 5%;
+    height: 47vh;
+    min-height: max-content;
+    align-items: center;
+    padding: 2%;
+}
+
+.currentweather .primary{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 1.3rem;
+}
+
+.primary .location{
+    font-size: 3rem;
+    font-weight: 600;
+}
+
+.primary .temp{
+    font-size: 6rem;
+    font-weight: 600;
+}
+
+.datetime{
+    display: flex;
+    gap: 20px;
+}
+
+.currentweather .secondary{
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+    font-size: 1.3rem;
+    gap: 2rem;
+}
+
+.secondary>div{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 2rem;
+}
+
+.secondary>div>div{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.secondary .title{
+    text-align: center;
+}
+
+.secondary .data{
+    font-size: 2.1rem;
+}
+
+.nextweek{
+    width: 100%;
+    padding: 0.5% 2%;
+}
+
+.nextweek .title{
+    font-size: 2rem;
+    font-weight: 600;
+}
