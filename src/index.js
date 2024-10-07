@@ -67,8 +67,10 @@ function displayCurrentConditions(processedWeather){
   windUnit.textContent=' '+speedUnit;
   windUnit.style.fontSize='1rem';
   let windValue=document.createElement('span');
+  const windSpeed=currentSecondary.querySelector('.windspeed .data');
   windValue.textContent=processedWeather.windSpeed;
-  currentSecondary.querySelector('.windspeed .data').append(windValue,windUnit);
+  while (windSpeed.hasChildNodes()) windSpeed.firstChild.remove()
+  windSpeed.append(windValue,windUnit);
   currentSecondary.querySelector('.uvindex .data').textContent=processedWeather.uvIndex;
   currentSecondary.querySelector('.mintemp .data').innerHTML=processedWeather.mintemp+'&deg;c';
   currentSecondary.querySelector('.maxtemp .data').innerHTML=processedWeather.maxtemp+'&deg;c';
@@ -77,6 +79,9 @@ function displayCurrentConditions(processedWeather){
 }
 
 function displayWeekWeather(processedWeather){
+  document.querySelector('.nextweek').removeChild(document.querySelector('.days'));
+  const days=document.createElement('div');
+  days.classList.add('days');
   processedWeather.next7Days.forEach((day)=>{
     const dayDiv = document.createElement('div');
     dayDiv.classList.add('day');
@@ -102,11 +107,12 @@ function displayWeekWeather(processedWeather){
     icon.src=precipitationsvg;
     const data=document.createElement('div');
     data.classList.add('data');
-    data.textContent=day.precipprob;
+    data.textContent=day.precipprob+' %';
     precip.append(icon,data);
     dayDiv.append(dateDiv,img,temp,maxtemp,mintemp,precip);
-    document.querySelector('.days').append(dayDiv);
+    days.append(dayDiv);
   })
+  document.querySelector('.nextweek').appendChild(days);
 }
 
 function setConditionIcon(icon,imgElem){
@@ -143,4 +149,12 @@ function setConditionIcon(icon,imgElem){
   }
 }
 
-getWeather('bangalore');
+const form=document.querySelector('form');
+form.addEventListener('submit',(event)=>{
+  event.preventDefault();
+  let city=form.querySelector('input').value;
+  form.querySelector('input').value;
+  getWeather(city);
+})
+
+getWeather('Bangalore')
