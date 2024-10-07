@@ -36,7 +36,8 @@ body{
     height: 47vh;
     min-height: max-content;
     align-items: center;
-    padding: 2%;
+    padding: 1rem 2%;
+    min-width: max-content;
 }
 
 .currentweather .primary{
@@ -56,6 +57,15 @@ body{
     font-weight: 600;
 }
 
+.tempicon{
+    display: flex;
+    gap: 2rem;
+}
+
+.primary img{
+    width: 8rem;
+}
+
 .datetime{
     display: flex;
     gap: 20px;
@@ -66,28 +76,41 @@ body{
     width: 100%;
     justify-content: space-around;
     font-size: 1.3rem;
-    gap: 2rem;
+    gap: 1.5rem;
 }
 
 .secondary>div{
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    align-items: start;
     gap: 2rem;
+    width: max-content;
+}
+
+.secondary img{
+    width: 3rem;
+    height: 3rem;
 }
 
 .secondary>div>div{
+    width: max-content;
     display: flex;
-    flex-direction: column;
+    justify-content: center;
     align-items: center;
+    gap: 2rem;
 }
 
-.secondary .title{
-    text-align: center;
+.secondary>div>div>div{
+    display: flex;
+    flex-direction: column;
 }
 
 .secondary .data{
     font-size: 2.1rem;
+}
+
+.secondary .data span{
+    font-size: 2rem;
 }
 
 .nextweek{
@@ -98,4 +121,20 @@ body{
 .nextweek .title{
     font-size: 2rem;
     font-weight: 600;
+}
+
+.days{
+    display: flex;
+    justify-content: space-between;
+}
+
+.day{
+    width: 12.5%;
+}
+
+.day img{
+    width: 5rem;
+}
+.day .temp{
+    font-size: 2rem;
 }

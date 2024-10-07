@@ -1,4 +1,6 @@
 import "./styles.css";
+import rainsvg from "./images/rain.svg";
+
 
 let tempUnit='c';
 
@@ -24,15 +26,12 @@ function processWeatherData(weatherJSON){
     temperature: weatherJSON.currentConditions.temp,
     mintemp: weatherJSON.days[0].tempmin,
     maxtemp: weatherJSON.days[0].tempmax,
-    dew: weatherJSON.currentConditions.dew,
     humidity: weatherJSON.currentConditions.humidity,
     feelsLike: weatherJSON.currentConditions.feelslike,
-    sunrise: weatherJSON.currentConditions.sunrise,
-    sunset: weatherJSON.currentConditions.sunset,
+    sunrise: weatherJSON.currentConditions.sunrise.slice(0,5),
+    sunset: weatherJSON.currentConditions.sunset.slice(0,5),
     uvIndex: weatherJSON.currentConditions.uvindex,
     windSpeed: weatherJSON.currentConditions.windspeed,
-    pressure: weatherJSON.currentConditions.pressure,
-    visibility: weatherJSON.currentConditions.visibility,
     precipchance: weatherJSON.currentConditions.precipprob,
     icon: weatherJSON.currentConditions.icon,
     description: weatherJSON.description,
@@ -53,16 +52,26 @@ function displayWeatherData(processedWeather){
   currentPrimary.querySelector('.alerts').textContent=processedWeather.alerts;
   currentSecondary.querySelector('.feelslike .data').innerHTML=processedWeather.feelsLike+'&deg;c';
   currentSecondary.querySelector('.humidity .data').textContent=processedWeather.humidity+' %';
-  currentSecondary.querySelector('.dew .data').innerHTML=processedWeather.dew+'&deg;c';
   currentSecondary.querySelector('.sunrise .data').textContent=processedWeather.sunrise;
   currentSecondary.querySelector('.sunset .data').textContent=processedWeather.sunset;
-  currentSecondary.querySelector('.windspeed .data').textContent=processedWeather.windSpeed+' km/h';
+  let windUnit=document.createElement('span');
+  windUnit.textContent=' km/hr';
+  windUnit.style.fontSize='1rem';
+  let windValue=document.createElement('span');
+  windValue.textContent=processedWeather.windSpeed
+  currentSecondary.querySelector('.windspeed .data').append(windValue,windUnit);
   currentSecondary.querySelector('.uvindex .data').textContent=processedWeather.uvIndex;
-  currentSecondary.querySelector('.pressure .data').textContent=processedWeather.pressure+' hPa';
-  currentSecondary.querySelector('.visibility .data').textContent=processedWeather.visibility+' km';
   currentSecondary.querySelector('.mintemp .data').innerHTML=processedWeather.mintemp+'&deg;c';
   currentSecondary.querySelector('.maxtemp .data').innerHTML=processedWeather.maxtemp+'&deg;c';
   currentSecondary.querySelector('.precipchance .data').textContent=processedWeather.precipchance+' %';
+  switch (processedWeather.icon) {
+    case "rain":
+      currentPrimary.querySelector('.icon').src=rainsvg;
+      break;
+  
+    default:
+      break;
+  }
 }
 
-getWeather();
+getWeather('bangalore');
