@@ -28,6 +28,7 @@ body{
 
 .content{
     height: 100%;
+    width: 100%;
 }
 
 .currentweather{
@@ -36,7 +37,6 @@ body{
     height: 47vh;
     min-height: max-content;
     align-items: center;
-    padding: 1rem 2%;
     min-width: max-content;
 }
 
@@ -92,6 +92,11 @@ body{
     height: 3rem;
 }
 
+.precipchance img{
+    width: 3.3rem;
+    height: 3.3rem;
+}
+
 .secondary>div>div{
     width: max-content;
     display: flex;
@@ -115,7 +120,8 @@ body{
 
 .nextweek{
     width: 100%;
-    padding: 0.5% 2%;
+    display: flex;
+    flex-direction: column;
 }
 
 .nextweek .title{
@@ -126,10 +132,23 @@ body{
 .days{
     display: flex;
     justify-content: space-between;
+    padding: 1rem 1rem;
+    gap: 2rem;
+    width: 100%;
+    padding-bottom: 0;
 }
 
 .day{
-    width: 12.5%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    border: 2px solid black;
+    border-radius: 20px;
+    padding: 0.5rem 2rem;
+    width: 100%;
+    box-shadow: 0 0 10px #888888;
+    min-width: 160px;
 }
 
 .day img{
@@ -137,4 +156,14 @@ body{
 }
 .day .temp{
     font-size: 2rem;
+}
+
+.day .precipitation{
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.day .precipitation img{
+    width: 2rem;
 }
