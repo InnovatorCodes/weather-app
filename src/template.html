@@ -3,17 +3,20 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="./images/favicon.svg" type="image/svg+xml">
+    <link rel="icon" href="./images/favicon.svg" type="image/svg+xml" />
     <title>Tempora | Weather App</title>
     <style>
-      body.startup{
+      body.startup {
         display: none;
       }
-      .loaderDiv.loading{
+      .loaderDiv.loading {
         display: flex;
+        width: 100%;
+        height: 60%;
         justify-content: center;
+        align-items: center;
       }
-      .content.loading{
+      .content.loading {
         display: none;
       }
     </style>
@@ -21,11 +24,11 @@
   <body class="startup">
     <div class="header">
       <form>
-        <input type="text" placeholder="Search City">
+        <input type="text" placeholder="Search City" />
         <button type="submit">Search</button>
       </form>
       <h1>Tempora</h1>
-      <img src="./images/celsius.svg" class="unit" alt="">
+      <img src="./images/celsius.svg" class="unit" alt="" />
     </div>
     <div class="loaderDiv loading"><div class="loader"></div></div>
     <div class="content loading">
@@ -38,7 +41,7 @@
           </div>
           <div class="tempicon">
             <div class="temp"></div>
-            <img class="icon"></img>
+            <img class="icon" />
           </div>
           <div class="conditions"></div>
           <div class="desc"></div>
@@ -46,21 +49,21 @@
         <div class="secondary">
           <div class="div1">
             <div class="feelslike">
-              <img src="./images/feels-like.svg" alt="">
+              <img src="./images/feels-like.svg" alt="" />
               <div>
                 <div class="title">Feels Like</div>
                 <div class="data"></div>
               </div>
             </div>
             <div class="sunrise">
-              <img src="./images/sunrise.svg" alt="">
+              <img src="./images/sunrise.svg" alt="" />
               <div>
                 <div class="title">Sunrise</div>
                 <div class="data"></div>
               </div>
             </div>
             <div class="humidity">
-              <img src="./images/humidity.svg" alt="">
+              <img src="./images/humidity.svg" alt="" />
               <div>
                 <div class="title">Humidity</div>
                 <div class="data"></div>
@@ -69,21 +72,21 @@
           </div>
           <div class="div2">
             <div class="maxtemp">
-              <img src="./images/maxtemp.svg" alt="">
+              <img src="./images/maxtemp.svg" alt="" />
               <div>
                 <div class="title">Max Temp.</div>
                 <div class="data"></div>
               </div>
             </div>
             <div class="sunset">
-              <img src="./images/sunset.svg" alt="">
+              <img src="./images/sunset.svg" alt="" />
               <div>
                 <div class="title">Sunset</div>
                 <div class="data"></div>
               </div>
             </div>
             <div class="precipchance">
-              <img src="./images/precipitation.svg" alt="">
+              <img src="./images/precipitation.svg" alt="" />
               <div>
                 <div class="title">Precipitation</div>
                 <div class="data"></div>
@@ -92,21 +95,21 @@
           </div>
           <div class="div3">
             <div class="mintemp">
-              <img src="./images/mintemp.svg" alt="">
+              <img src="./images/mintemp.svg" alt="" />
               <div>
                 <div class="title">Min Temp.</div>
                 <div class="data"></div>
               </div>
             </div>
             <div class="uvindex">
-              <img src="./images/uv-index.png" alt="">
+              <img src="./images/uv-index.png" alt="" />
               <div>
                 <div class="title">UV Index</div>
                 <div class="data"></div>
               </div>
             </div>
             <div class="windspeed">
-              <img src="./images/wind.svg" alt="">
+              <img src="./images/wind.svg" alt="" />
               <div>
                 <div class="title">Wind</div>
                 <div class="data"></div>
@@ -117,8 +120,7 @@
       </div>
       <div class="nextweek">
         <div class="title">Next 7 Days</div>
-        <div class="days">
-        </div>
+        <div class="days"></div>
       </div>
     </div>
   </body>
