@@ -20,14 +20,17 @@ function processWeatherData(weatherJSON) {
     weatherJSON.currentConditions.sunset.slice(3, 5),
     weatherJSON.currentConditions.sunset.slice(6),
   );
-  let sunriseTime= new Date();
+  let sunriseTime = new Date();
   sunriseTime.setHours(
     weatherJSON.currentConditions.sunrise.slice(0, 2),
     weatherJSON.currentConditions.sunrise.slice(3, 5),
     weatherJSON.currentConditions.sunrise.slice(6),
   );
   let locationTime = calculateTimeOffset(today, weatherJSON.tzoffset);
-  if ((locationTime > sunsetTime || locationTime<sunriseTime  )&& weatherJSON.currentConditions.icon == "rain")
+  if (
+    (locationTime > sunsetTime || locationTime < sunriseTime) &&
+    weatherJSON.currentConditions.icon == "rain"
+  )
     weatherJSON.currentConditions.icon = "rain-night";
   let currentTime = "";
   if (locationTime.getHours() < 10) currentTime += "0";
