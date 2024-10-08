@@ -12,8 +12,6 @@ async function getWeather(location = "bangalore", unit) {
 
 function processWeatherData(weatherJSON) {
   let today = new Date();
-  let formattedDate =
-    today.getDate() + "/" + (today.getMonth() + 1) + "/" + today.getFullYear();
   let sunsetTime = new Date();
   sunsetTime.setHours(
     weatherJSON.currentConditions.sunset.slice(0, 2),
@@ -27,6 +25,12 @@ function processWeatherData(weatherJSON) {
     weatherJSON.currentConditions.sunrise.slice(6),
   );
   let locationTime = calculateTimeOffset(today, weatherJSON.tzoffset);
+  let formattedDate =
+    locationTime.getDate() +
+    "/" +
+    (locationTime.getMonth() + 1) +
+    "/" +
+    locationTime.getFullYear();
   if (
     (locationTime > sunsetTime || locationTime < sunriseTime) &&
     weatherJSON.currentConditions.icon == "rain"
