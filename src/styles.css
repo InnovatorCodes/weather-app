@@ -93,6 +93,10 @@ form input {
 
 form input:focus-visible {
   border: none;
+  outline: none;
+}
+
+form:focus-within {
   outline: 2px solid black;
 }
 

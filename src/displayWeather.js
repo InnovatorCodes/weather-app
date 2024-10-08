@@ -21,7 +21,6 @@ import fogBG from "./images/fog.jpg";
 export { displayCurrentConditions, displayWeekWeather };
 
 function displayCurrentConditions(processedWeather, tempUnit, speedUnit) {
-  console.log(...arguments);
   const currentPrimary = document.querySelector(".currentweather .primary");
   const currentSecondary = document.querySelector(".currentweather .secondary");
   currentPrimary.querySelector(".location").textContent =
