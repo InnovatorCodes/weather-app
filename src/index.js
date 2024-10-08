@@ -12,6 +12,7 @@ import precipitationsvg from "./images/precipitation.svg";
 import celsius from "./images/celsius.svg";
 import fahrenheit from "./images/fahrenheit.svg";
 import rainyBG from "./images/rainy.jpg";
+import rainyNightBG from "./images/rain-night.jpg";
 import clearDayBG from "./images/clear-day.jpg";
 import clearNightBG from "./images/clear-night.jpg";
 import partlyCloudyDayBG from "./images/partly-cloudy-day.jpg";
@@ -26,12 +27,13 @@ let tempUnit='C', speedUnit='km/hr';
 let metricWeather,USWeather;
 
 async function getWeather(location="bangalore",unit) {
-  let weatherData = await fetch(
+  let response = await fetch(
     `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${location}/next7days?unitGroup=${unit}&key=LJJ8KJ9LQY5TCRFLW2PUPSTD9`,
   );
-  let weatherJSON = await weatherData.json();
-  //console.log(weatherJSON);
-  let processedWeather= processWeatherData(weatherJSON);
+  if(!response.ok) throw new Error(response.status);
+  let weatherData = await response.json();
+  console.log(weatherData);
+  let processedWeather= processWeatherData(weatherData);
   //console.log(processedWeather);
   return processedWeather;
 }
@@ -40,9 +42,20 @@ function processWeatherData(weatherJSON){
   //console.log(weatherJSON);
   let date=new Date(weatherJSON.days[0].datetime);
   let formattedDate=date.getDate()+'/'+(date.getMonth()+1)+'/'+date.getFullYear();
+  let sunsetTime = new Date();
+  sunsetTime.setHours(weatherJSON.currentConditions.sunset.slice(0,2), weatherJSON.currentConditions.sunset.slice(3,5), weatherJSON.currentConditions.sunset.slice(6));
+  let today=new Date();
+  if(today>sunsetTime && weatherJSON.currentConditions.icon=='rain') weatherJSON.currentConditions.icon='rain-night'; 
+  let currentTime='';
+  if(today.getHours()<10) currentTime+='0';
+  currentTime+=today.getHours()+':';
+  if(today.getMinutes()<10) currentTime+='0';
+  currentTime+=today.getMinutes()+':';
+  if(today.getSeconds()<10) currentTime+='0';
+  currentTime+=today.getSeconds();
   return {
     address: weatherJSON.resolvedAddress,
-    time: weatherJSON.currentConditions.datetime,
+    time: currentTime,
     date: formattedDate,
     conditions: weatherJSON.currentConditions.conditions,
     temperature: weatherJSON.currentConditions.temp,
@@ -132,6 +145,9 @@ function setConditionIcon(icon,imgElem){
     case "rain":
       imgElem.src=rainsvg;
       break;
+    case "rain-night":
+      imgElem.src=rainsvg;
+      break; 
     case "snow":
       imgElem.src=snowsvg;
       break;
@@ -165,6 +181,9 @@ function setBGImage(icon){
   switch (icon) {
     case "rain":
       document.body.style.backgroundImage=`url(${rainyBG})`;
+      break;
+    case "rain-night":
+      document.body.style.backgroundImage=`url(${rainyNightBG})`;
       break;
     case "snow":
       document.body.style.backgroundImage=`url(${snowBG})`;
@@ -217,29 +236,37 @@ unitBtn.addEventListener('click',changeUnit);
 
 async function getAndShowWeather(city){
   loader('loading');
-  metricWeather=await getWeather(city,'metric');
-  USWeather=await getWeather(city,'us');
-  if(tempUnit=='C'){
-    displayCurrentConditions(metricWeather);
-    displayWeekWeather(metricWeather);
+  try{
+    metricWeather=await getWeather(city,'metric');
+    USWeather=await getWeather(city,'us');
+    if(tempUnit=='C'){
+      displayCurrentConditions(metricWeather);
+      displayWeekWeather(metricWeather);
+    }
+    else{
+      displayCurrentConditions(USWeather);
+      displayWeekWeather(USWeather);
+    }
+    loader('done');
+  } catch(error){
+    if(error.message=='400') alert('Unable to Find Location. Please try a different Location')
+    else{ 
+      console.log(error);
+      alert('Sorry. We are facing technical issues at the moment. Please retry later')
+    } 
   }
-  else{
-    displayCurrentConditions(USWeather);
-    displayWeekWeather(USWeather);
-  }
-  loader('done');
 }
 
 const form=document.querySelector('form');
 form.addEventListener('submit',(event)=>{
   event.preventDefault();
   let city=form.querySelector('input').value;
-  form.querySelector('input').value;
-  getAndShowWeather(city);
+  form.querySelector('input').value="";
+  if(!city=='') getAndShowWeather(city);
 })
 
 function loader(status){
-  console.log('hi');
+  //console.log('hi');
   if(status=='loading'){
     document.querySelector('.content').classList.add('loading')
     document.querySelector('.loaderDiv').classList.add('loading');
