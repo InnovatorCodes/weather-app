@@ -11,25 +11,25 @@ async function getWeather(location = "bangalore", unit) {
 }
 
 function processWeatherData(weatherJSON) {
-  let date = new Date(weatherJSON.days[0].datetime);
+  let today = new Date();
   let formattedDate =
-    date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
+    today.getDate() + "/" + (today.getMonth() + 1) + "/" + today.getFullYear();
   let sunsetTime = new Date();
   sunsetTime.setHours(
     weatherJSON.currentConditions.sunset.slice(0, 2),
     weatherJSON.currentConditions.sunset.slice(3, 5),
     weatherJSON.currentConditions.sunset.slice(6),
   );
-  let today = new Date();
-  if (today > sunsetTime && weatherJSON.currentConditions.icon == "rain")
+  let locationTime = calculateTimeOffset(today, weatherJSON.tzoffset);
+  if (locationTime > sunsetTime && weatherJSON.currentConditions.icon == "rain")
     weatherJSON.currentConditions.icon = "rain-night";
   let currentTime = "";
-  if (today.getHours() < 10) currentTime += "0";
-  currentTime += today.getHours() + ":";
-  if (today.getMinutes() < 10) currentTime += "0";
-  currentTime += today.getMinutes() + ":";
-  if (today.getSeconds() < 10) currentTime += "0";
-  currentTime += today.getSeconds();
+  if (locationTime.getHours() < 10) currentTime += "0";
+  currentTime += locationTime.getHours() + ":";
+  if (locationTime.getMinutes() < 10) currentTime += "0";
+  currentTime += locationTime.getMinutes() + ":";
+  if (locationTime.getSeconds() < 10) currentTime += "0";
+  currentTime += locationTime.getSeconds();
   return {
     address: weatherJSON.resolvedAddress,
     time: currentTime,
@@ -49,4 +49,19 @@ function processWeatherData(weatherJSON) {
     description: weatherJSON.description,
     next7Days: weatherJSON.days.slice(1),
   };
+}
+
+function calculateTimeOffset(currentLocalTime, offset) {
+  // Convert the user's timezone offset from decimal hours to milliseconds
+  const offsetInMilliseconds = offset * 60 * 60 * 1000;
+  // Get the local timezone offset in milliseconds
+  const localOffsetInMilliseconds =
+    currentLocalTime.getTimezoneOffset() * 60 * 1000;
+  // Calculate the time adjusted to the provided timezone offset
+  const adjustedTime = new Date(
+    currentLocalTime.getTime() +
+      localOffsetInMilliseconds +
+      offsetInMilliseconds,
+  );
+  return adjustedTime;
 }
