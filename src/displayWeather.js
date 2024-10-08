@@ -20,12 +20,18 @@ import windyBG from "./images/windy.jpg";
 import fogBG from "./images/fog.jpg";
 export { displayCurrentConditions, displayWeekWeather };
 
-function displayCurrentConditions(processedWeather, tempUnit, speedUnit) {
+function displayCurrentConditions(
+  processedWeather,
+  tempUnit,
+  speedUnit,
+  currentTime,
+) {
+  console.log(...arguments);
   const currentPrimary = document.querySelector(".currentweather .primary");
   const currentSecondary = document.querySelector(".currentweather .secondary");
   currentPrimary.querySelector(".location").textContent =
     processedWeather.address;
-  currentPrimary.querySelector(".time").textContent = processedWeather.time;
+  currentPrimary.querySelector(".time").textContent = currentTime;
   currentPrimary.querySelector(".temp").innerHTML =
     processedWeather.temperature + `&deg;${tempUnit}`;
   currentPrimary.querySelector(".date").textContent = processedWeather.date;

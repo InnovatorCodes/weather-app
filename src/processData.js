@@ -39,25 +39,27 @@ function processWeatherData(weatherJSON) {
   currentTime += locationTime.getMinutes() + ":";
   if (locationTime.getSeconds() < 10) currentTime += "0";
   currentTime += locationTime.getSeconds();
-  return {
-    address: weatherJSON.resolvedAddress,
-    time: currentTime,
-    date: formattedDate,
-    conditions: weatherJSON.currentConditions.conditions,
-    temperature: weatherJSON.currentConditions.temp,
-    mintemp: weatherJSON.days[0].tempmin,
-    maxtemp: weatherJSON.days[0].tempmax,
-    humidity: weatherJSON.currentConditions.humidity,
-    feelsLike: weatherJSON.currentConditions.feelslike,
-    sunrise: weatherJSON.currentConditions.sunrise.slice(0, 5),
-    sunset: weatherJSON.currentConditions.sunset.slice(0, 5),
-    uvIndex: weatherJSON.currentConditions.uvindex,
-    windSpeed: weatherJSON.currentConditions.windspeed,
-    precipchance: weatherJSON.currentConditions.precipprob,
-    icon: weatherJSON.currentConditions.icon,
-    description: weatherJSON.description,
-    next7Days: weatherJSON.days.slice(1),
-  };
+  return [
+    {
+      address: weatherJSON.resolvedAddress,
+      date: formattedDate,
+      conditions: weatherJSON.currentConditions.conditions,
+      temperature: weatherJSON.currentConditions.temp,
+      mintemp: weatherJSON.days[0].tempmin,
+      maxtemp: weatherJSON.days[0].tempmax,
+      humidity: weatherJSON.currentConditions.humidity,
+      feelsLike: weatherJSON.currentConditions.feelslike,
+      sunrise: weatherJSON.currentConditions.sunrise.slice(0, 5),
+      sunset: weatherJSON.currentConditions.sunset.slice(0, 5),
+      uvIndex: weatherJSON.currentConditions.uvindex,
+      windSpeed: weatherJSON.currentConditions.windspeed,
+      precipchance: weatherJSON.currentConditions.precipprob,
+      icon: weatherJSON.currentConditions.icon,
+      description: weatherJSON.description,
+      next7Days: weatherJSON.days.slice(1),
+    },
+    currentTime,
+  ];
 }
 
 function calculateTimeOffset(currentLocalTime, offset) {

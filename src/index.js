@@ -7,19 +7,20 @@ import { getWeather } from "./processData";
 let tempUnit = "C",
   speedUnit = "km/hr";
 let metricWeather, USWeather;
+let currentTime;
 
 const unitBtn = document.querySelector(".unit");
 function changeUnit() {
   if (tempUnit == "C") {
     tempUnit = "F";
     speedUnit = "mph";
-    displayCurrentConditions(USWeather, tempUnit, speedUnit);
+    displayCurrentConditions(USWeather, tempUnit, speedUnit, currentTime);
     displayWeekWeather(USWeather, tempUnit);
     unitBtn.src = fahrenheit;
   } else {
     tempUnit = "C";
     speedUnit = "km/h";
-    displayCurrentConditions(metricWeather, tempUnit, speedUnit);
+    displayCurrentConditions(metricWeather, tempUnit, speedUnit, currentTime);
     displayWeekWeather(metricWeather, tempUnit);
     unitBtn.src = celsius;
   }
@@ -30,13 +31,13 @@ unitBtn.addEventListener("click", changeUnit);
 async function getAndShowWeather(city) {
   loader("loading");
   try {
-    metricWeather = await getWeather(city, "metric");
-    USWeather = await getWeather(city, "us");
+    [metricWeather, currentTime] = await getWeather(city, "metric");
+    [USWeather, currentTime] = await getWeather(city, "us");
     if (tempUnit == "C") {
-      displayCurrentConditions(metricWeather, tempUnit, speedUnit);
+      displayCurrentConditions(metricWeather, tempUnit, speedUnit, currentTime);
       displayWeekWeather(metricWeather, tempUnit);
     } else {
-      displayCurrentConditions(USWeather, tempUnit, speedUnit);
+      displayCurrentConditions(USWeather, tempUnit, speedUnit, currentTime);
       displayWeekWeather(USWeather, tempUnit);
     }
     loader("done");
