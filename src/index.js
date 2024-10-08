@@ -9,18 +9,21 @@ import fogsvg from "./images/fog.svg";
 import partlycloudydaysvg from "./images/partly-cloudy-day.svg";
 import partlycloudynightsvg from "./images/partly-cloudy-night.svg";
 import precipitationsvg from "./images/precipitation.svg";
+import celsius from "./images/celsius.svg";
+import fahrenheit from "./images/fahrenheit.svg";
 
 let tempUnit='c', speedUnit='km/hr';
+let metricWeather,USWeather;
 
-async function getWeather(location="vellore") {
+async function getWeather(location="bangalore",unit) {
   let weatherData = await fetch(
-    `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${location}/next7days?unitGroup=metric&key=LJJ8KJ9LQY5TCRFLW2PUPSTD9`,
+    `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${location}/next7days?unitGroup=${unit}&key=LJJ8KJ9LQY5TCRFLW2PUPSTD9`,
   );
   let weatherJSON = await weatherData.json();
+  console.log(weatherJSON);
   let processedWeather= processWeatherData(weatherJSON);
-  displayCurrentConditions(processedWeather);
-  displayWeekWeather(processedWeather);
   console.log(processedWeather);
+  return processedWeather;
 }
 
 function processWeatherData(weatherJSON){
@@ -59,7 +62,7 @@ function displayCurrentConditions(processedWeather){
   currentPrimary.querySelector('.conditions').textContent=processedWeather.conditions;
   currentPrimary.querySelector('.desc').textContent=processedWeather.description;
   if(processedWeather.alerts.length==0) currentPrimary.querySelector('.alerts').style.display='none';
-  currentSecondary.querySelector('.feelslike .data').innerHTML=processedWeather.feelsLike+'&deg;c';
+  currentSecondary.querySelector('.feelslike .data').innerHTML=processedWeather.feelsLike+`&deg;${tempUnit}`;
   currentSecondary.querySelector('.humidity .data').textContent=processedWeather.humidity+' %';
   currentSecondary.querySelector('.sunrise .data').textContent=processedWeather.sunrise;
   currentSecondary.querySelector('.sunset .data').textContent=processedWeather.sunset;
@@ -67,13 +70,13 @@ function displayCurrentConditions(processedWeather){
   windUnit.textContent=' '+speedUnit;
   windUnit.style.fontSize='1rem';
   let windValue=document.createElement('span');
-  const windSpeed=currentSecondary.querySelector('.windspeed .data');
   windValue.textContent=processedWeather.windSpeed;
-  while (windSpeed.hasChildNodes()) windSpeed.firstChild.remove()
-  windSpeed.append(windValue,windUnit);
+  const windSpeedDiv=currentSecondary.querySelector('.windspeed .data');
+  while (windSpeedDiv.hasChildNodes()) windSpeedDiv.firstChild.remove()
+  windSpeedDiv.append(windValue,windUnit);
   currentSecondary.querySelector('.uvindex .data').textContent=processedWeather.uvIndex;
-  currentSecondary.querySelector('.mintemp .data').innerHTML=processedWeather.mintemp+'&deg;c';
-  currentSecondary.querySelector('.maxtemp .data').innerHTML=processedWeather.maxtemp+'&deg;c';
+  currentSecondary.querySelector('.mintemp .data').innerHTML=processedWeather.mintemp+`&deg;${tempUnit}`;
+  currentSecondary.querySelector('.maxtemp .data').innerHTML=processedWeather.maxtemp+`&deg;${tempUnit}`;
   currentSecondary.querySelector('.precipchance .data').textContent=processedWeather.precipchance+' %';
   setConditionIcon(processedWeather.icon,currentPrimary.querySelector('.icon'));
 }
@@ -93,13 +96,13 @@ function displayWeekWeather(processedWeather){
     setConditionIcon(day.icon,img);
     const temp=document.createElement('div');
     temp.classList.add('temp');
-    temp.innerHTML=day.temp+'&deg;c';
+    temp.innerHTML=day.temp+`&deg;${tempUnit}`;
     const maxtemp=document.createElement('div');
     maxtemp.classList.add('maxtemp');
-    maxtemp.textContent='Max: '+day.tempmax;
+    maxtemp.innerHTML='Max: '+day.tempmax+`&deg;${tempUnit}`;
     const mintemp=document.createElement('div');
     mintemp.classList.add('mintemp');
-    mintemp.textContent='Min: '+day.tempmin;
+    mintemp.innerHTML='Min: '+day.tempmin+`&deg;${tempUnit}`;
     const precip=document.createElement('div');
     precip.classList.add('precipitation');
     const icon=document.createElement('img');
@@ -149,12 +152,48 @@ function setConditionIcon(icon,imgElem){
   }
 }
 
+const unitBtn=document.querySelector('.unit');
+function changeUnit(){
+  if(tempUnit=='c'){
+    tempUnit='F';
+    speedUnit='mph'
+    displayCurrentConditions(USWeather);
+    displayWeekWeather(USWeather);
+    unitBtn.src=fahrenheit;
+  } 
+  else{
+    tempUnit='c';
+    speedUnit='km/h'
+    displayCurrentConditions(metricWeather);
+    displayWeekWeather(metricWeather);
+    unitBtn.src=celsius;
+  }
+}
+
+unitBtn.addEventListener('click',changeUnit);
+
+async function getAndShowWeather(city){
+  metricWeather=await getWeather(city,'metric');
+  USWeather=await getWeather(city,'us');
+  if(tempUnit=='c'){
+    displayCurrentConditions(metricWeather);
+    displayWeekWeather(metricWeather);
+  }
+  else{
+    displayCurrentConditions(USWeather);
+    displayWeekWeather(USWeather);
+  }
+  
+}
+
 const form=document.querySelector('form');
 form.addEventListener('submit',(event)=>{
   event.preventDefault();
   let city=form.querySelector('input').value;
   form.querySelector('input').value;
-  getWeather(city);
+  getAndShowWeather(city);
 })
 
-getWeather('Bangalore')
+
+
+getAndShowWeather('Bangalore')
