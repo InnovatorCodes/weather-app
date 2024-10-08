@@ -4,8 +4,20 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Weather App</title>
+    <style>
+      body.startup{
+        display: none;
+      }
+      .loaderDiv.loading{
+        display: flex;
+        justify-content: center;
+      }
+      .content.loading{
+        display: none;
+      }
+    </style>
   </head>
-  <body>
+  <body class="startup">
     <div class="header">
       <form>
         <input type="text" placeholder="Search City">
@@ -13,7 +25,8 @@
       </form>
       <img src="./images/celsius.svg" class="unit" alt="">
     </div>
-    <div class="content">
+    <div class="loaderDiv loading"><div class="loader"></div></div>
+    <div class="content loading">
       <div class="currentweather">
         <div class="primary">
           <div class="location"></div>
@@ -27,7 +40,6 @@
           </div>
           <div class="conditions"></div>
           <div class="desc"></div>
-          <div class="alerts"></div>
         </div>
         <div class="secondary">
           <div class="div1">

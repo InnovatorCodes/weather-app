@@ -11,8 +11,18 @@ import partlycloudynightsvg from "./images/partly-cloudy-night.svg";
 import precipitationsvg from "./images/precipitation.svg";
 import celsius from "./images/celsius.svg";
 import fahrenheit from "./images/fahrenheit.svg";
+import rainyBG from "./images/rainy.jpg";
+import clearDayBG from "./images/clear-day.jpg";
+import clearNightBG from "./images/clear-night.jpg";
+import partlyCloudyDayBG from "./images/partly-cloudy-day.jpg";
+import partlyCloudyNightBG from "./images/partly-cloudy-night.jpg";
+import snowBG from "./images/snow.jpg";
+import cloudyBG from "./images/cloudy.jpg";
+import windyBG from "./images/windy.jpg";
+import fogBG from "./images/fog.jpg"
 
-let tempUnit='c', speedUnit='km/hr';
+
+let tempUnit='C', speedUnit='km/hr';
 let metricWeather,USWeather;
 
 async function getWeather(location="bangalore",unit) {
@@ -20,9 +30,9 @@ async function getWeather(location="bangalore",unit) {
     `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${location}/next7days?unitGroup=${unit}&key=LJJ8KJ9LQY5TCRFLW2PUPSTD9`,
   );
   let weatherJSON = await weatherData.json();
-  console.log(weatherJSON);
+  //console.log(weatherJSON);
   let processedWeather= processWeatherData(weatherJSON);
-  console.log(processedWeather);
+  //console.log(processedWeather);
   return processedWeather;
 }
 
@@ -47,7 +57,6 @@ function processWeatherData(weatherJSON){
     precipchance: weatherJSON.currentConditions.precipprob,
     icon: weatherJSON.currentConditions.icon,
     description: weatherJSON.description,
-    alerts: weatherJSON.alerts,
     next7Days: weatherJSON.days.slice(1),
   }
 }
@@ -61,7 +70,6 @@ function displayCurrentConditions(processedWeather){
   currentPrimary.querySelector('.date').textContent=processedWeather.date;
   currentPrimary.querySelector('.conditions').textContent=processedWeather.conditions;
   currentPrimary.querySelector('.desc').textContent=processedWeather.description;
-  if(processedWeather.alerts.length==0) currentPrimary.querySelector('.alerts').style.display='none';
   currentSecondary.querySelector('.feelslike .data').innerHTML=processedWeather.feelsLike+`&deg;${tempUnit}`;
   currentSecondary.querySelector('.humidity .data').textContent=processedWeather.humidity+' %';
   currentSecondary.querySelector('.sunrise .data').textContent=processedWeather.sunrise;
@@ -79,6 +87,7 @@ function displayCurrentConditions(processedWeather){
   currentSecondary.querySelector('.maxtemp .data').innerHTML=processedWeather.maxtemp+`&deg;${tempUnit}`;
   currentSecondary.querySelector('.precipchance .data').textContent=processedWeather.precipchance+' %';
   setConditionIcon(processedWeather.icon,currentPrimary.querySelector('.icon'));
+  setBGImage(processedWeather.icon);
 }
 
 function displayWeekWeather(processedWeather){
@@ -152,9 +161,43 @@ function setConditionIcon(icon,imgElem){
   }
 }
 
+function setBGImage(icon){
+  switch (icon) {
+    case "rain":
+      document.body.style.backgroundImage=`url(${rainyBG})`;
+      break;
+    case "snow":
+      document.body.style.backgroundImage=`url(${snowBG})`;
+      break;
+    case "fog":
+      document.body.style.backgroundImage=`url(${fogBG})`;
+      break;
+    case "wind":
+      document.body.style.backgroundImage=`url(${windyBG})`;
+      break;
+    case "cloudy":
+      document.body.style.backgroundImage=`url(${cloudyBG})`;
+      break;
+    case "partly-cloudy-day":
+      document.body.style.backgroundImage=`url(${partlyCloudyDayBG})`;
+      break;
+    case "partly-cloudy-night":
+      document.body.style.backgroundImage=`url(${partlyCloudyNightBG})`;
+      break;
+    case "clear-day":
+      document.body.style.backgroundImage=`url(${clearDayBG})`;
+      break;
+    case "clear-night":
+      document.body.style.backgroundImage=`url(${clearNightBG})`;
+      break;
+    default:
+      break;
+  }
+}
+
 const unitBtn=document.querySelector('.unit');
 function changeUnit(){
-  if(tempUnit=='c'){
+  if(tempUnit=='C'){
     tempUnit='F';
     speedUnit='mph'
     displayCurrentConditions(USWeather);
@@ -162,7 +205,7 @@ function changeUnit(){
     unitBtn.src=fahrenheit;
   } 
   else{
-    tempUnit='c';
+    tempUnit='C';
     speedUnit='km/h'
     displayCurrentConditions(metricWeather);
     displayWeekWeather(metricWeather);
@@ -173,9 +216,10 @@ function changeUnit(){
 unitBtn.addEventListener('click',changeUnit);
 
 async function getAndShowWeather(city){
+  loader('loading');
   metricWeather=await getWeather(city,'metric');
   USWeather=await getWeather(city,'us');
-  if(tempUnit=='c'){
+  if(tempUnit=='C'){
     displayCurrentConditions(metricWeather);
     displayWeekWeather(metricWeather);
   }
@@ -183,7 +227,7 @@ async function getAndShowWeather(city){
     displayCurrentConditions(USWeather);
     displayWeekWeather(USWeather);
   }
-  
+  loader('done');
 }
 
 const form=document.querySelector('form');
@@ -194,6 +238,17 @@ form.addEventListener('submit',(event)=>{
   getAndShowWeather(city);
 })
 
-
+function loader(status){
+  console.log('hi');
+  if(status=='loading'){
+    document.querySelector('.content').classList.add('loading')
+    document.querySelector('.loaderDiv').classList.add('loading');
+  }
+  if(status=='done'){
+    document.querySelector('.content').classList.remove('loading');
+    document.querySelector('.loaderDiv').classList.remove('loading');
+  }
+}
 
 getAndShowWeather('Bangalore')
+document.body.classList.remove('startup');
