@@ -147,6 +147,7 @@ form button:hover {
   height: 100%;
   flex: 1;
   flex-basis: auto;
+  min-width: 40%;
 }
 
 .primary .location {
