@@ -3,6 +3,7 @@
 
 :root {
   --BGColor: rgba(0, 0, 0, 0.55);
+  font-size: 1.6vh;
 }
 * {
   box-sizing: border-box;
@@ -24,6 +25,7 @@ body {
   min-width: 1415px;
   background-repeat: no-repeat;
   background-size: cover;
+  overflow: hidden;
 }
 
 .loaderDiv {
@@ -126,10 +128,10 @@ form button:hover {
 .currentweather {
   display: flex;
   gap: 1rem;
-  height: 43vh;
   min-height: max-content;
   align-items: center;
   max-width: 100%;
+  flex: 1;
 }
 
 .currentweather .primary {
@@ -235,6 +237,7 @@ form button:hover {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  flex: 1;
 }
 
 .nextweek .title {
