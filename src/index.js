@@ -14,13 +14,19 @@ function changeUnit() {
   if (tempUnit == "C") {
     tempUnit = "F";
     speedUnit = "mph";
-    displayCurrentConditions(USWeather, tempUnit, speedUnit, currentTime);
+    displayCurrentConditions(USWeather, tempUnit, speedUnit, currentTime, true);
     displayWeekWeather(USWeather, tempUnit);
     unitBtn.src = fahrenheit;
   } else {
     tempUnit = "C";
     speedUnit = "km/h";
-    displayCurrentConditions(metricWeather, tempUnit, speedUnit, currentTime);
+    displayCurrentConditions(
+      metricWeather,
+      tempUnit,
+      speedUnit,
+      currentTime,
+      true,
+    );
     displayWeekWeather(metricWeather, tempUnit);
     unitBtn.src = celsius;
   }
@@ -34,10 +40,22 @@ async function getAndShowWeather(city) {
     [metricWeather, currentTime] = await getWeather(city, "metric");
     [USWeather, currentTime] = await getWeather(city, "us");
     if (tempUnit == "C") {
-      displayCurrentConditions(metricWeather, tempUnit, speedUnit, currentTime);
+      displayCurrentConditions(
+        metricWeather,
+        tempUnit,
+        speedUnit,
+        currentTime,
+        false,
+      );
       displayWeekWeather(metricWeather, tempUnit);
     } else {
-      displayCurrentConditions(USWeather, tempUnit, speedUnit, currentTime);
+      displayCurrentConditions(
+        USWeather,
+        tempUnit,
+        speedUnit,
+        currentTime,
+        false,
+      );
       displayWeekWeather(USWeather, tempUnit);
     }
     loader("done");

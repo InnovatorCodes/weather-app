@@ -25,8 +25,9 @@ function displayCurrentConditions(
   tempUnit,
   speedUnit,
   currentTime,
+  unitChange,
 ) {
-  console.log(...arguments);
+  //console.log(...arguments);
   const currentPrimary = document.querySelector(".currentweather .primary");
   const currentSecondary = document.querySelector(".currentweather .secondary");
   currentPrimary.querySelector(".location").textContent =
@@ -35,10 +36,12 @@ function displayCurrentConditions(
   currentPrimary.querySelector(".temp").innerHTML =
     processedWeather.temperature + `&deg;${tempUnit}`;
   currentPrimary.querySelector(".date").textContent = processedWeather.date;
-  currentPrimary.querySelector(".conditions").textContent =
-    processedWeather.conditions;
-  currentPrimary.querySelector(".desc").textContent =
-    processedWeather.description;
+  if (!unitChange) {
+    currentPrimary.querySelector(".conditions").textContent =
+      processedWeather.conditions;
+    currentPrimary.querySelector(".desc").textContent =
+      processedWeather.description;
+  }
   currentSecondary.querySelector(".feelslike .data").innerHTML =
     processedWeather.feelsLike + `&deg;${tempUnit}`;
   currentSecondary.querySelector(".humidity .data").textContent =
